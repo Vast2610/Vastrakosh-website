@@ -258,6 +258,10 @@ dialog.quick::backdrop { background: rgba(30, 22, 16, .55); }
 .quick-body .contact { color: var(--muted); font-size: 0.92rem; }
 .quick-close { position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(255,255,255,.9); color: #241d19; font-size: 1.4rem; line-height: 1; cursor: pointer; }
 
+.logo img { height: 66px; width: auto; display: block; mix-blend-mode: multiply; }
+.foot-brand .badge { width: 92px; height: 92px; }
+.foot-brand .badge img { height: 70px; width: auto; display: block; }
+
 /* ---- Phones and small tablets ---- */
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 img { max-width: 100%; }
@@ -279,6 +283,7 @@ img { max-width: 100%; }
   .head-row::before { content: ""; }
   .logo svg { width: 28px; height: 28px; }
   .logo b { font-size: 1.1rem; }
+  .logo img { height: 54px; }
   .head-right { gap: 2px; }
   nav.main { flex-wrap: wrap; justify-content: center; gap: 4px 18px; padding-block: 4px 10px; overflow: visible; }
   nav.main a { font-size: 0.7rem; letter-spacing: 0.1em; padding-block: 6px 2px; }
@@ -337,8 +342,7 @@ img { max-width: 100%; }
   <div class="wrap head-row">
     <div class="head-left">Sydney, Australia</div>
     <a class="logo" href="index.html#top" aria-label="Vastrakosh home">
-      <svg><use href="#mark"/></svg>
-      <b>Vastrakosh</b>
+      <img src="images/logo.png" alt="Vastrakosh, The Eternal Style" width="110" height="125">
     </a>
     <div class="head-right">
       <a href="tel:+61431983840" aria-label="Call 0431 983 840"><svg><use href="#i-phone"/></svg></a>
@@ -435,7 +439,7 @@ img { max-width: 100%; }
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <div class="badge"><svg><use href="#mark"/></svg></div>
+        <div class="badge"><img src="images/logo.png" alt="Vastrakosh" width="110" height="125"></div>
         <p class="foot-name"><span class="deva" lang="mr">वस्त्रकोश</span> <i>vastra</i>, garment + <i>kosh</i>, treasury. A treasury of garments.</p>
         <p>Vastrakosh is an Australian-owned saree boutique in Sydney, bringing India's textile heritage to your wardrobe.</p>
       </div>
