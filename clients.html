@@ -10,6 +10,7 @@
 <style>
 /* Layout: Happy Clients. Same header and footer as the home page; intro, featured client story (photo + story), client diaries grid, share-your-moment band. */
 :root {
+  color-scheme: light;        /* always light, even when the device is in dark mode */
   --plum: #8a1f5e;            /* logo only */
   --ground: #f9f6f0;          /* ivory page */
   --surface: #ffffff;
@@ -27,20 +28,10 @@
   --font-mark: "Rozha One", Georgia, serif;
   --font-deva: "Tiro Devanagari Marathi", "Noto Serif Devanagari", serif;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --plum: #d36aa4; --ground: #14110e; --surface: #1d1915; --ink: #f1ebe1; --muted: #b2a798;
-    --line: #362f28; --band: #1b1713; --accent: #0b0907; --on-accent: #f1ebe1; --gold: #d4ae5e; --gold-text: #dcb766;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --plum: #d36aa4; --ground: #14110e; --surface: #1d1915; --ink: #f1ebe1; --muted: #b2a798;
-  --line: #362f28; --band: #1b1713; --accent: #0b0907; --on-accent: #f1ebe1; --gold: #d4ae5e; --gold-text: #dcb766;
-  color-scheme: dark;
-}
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
 body { background: var(--ground); color: var(--ink); font-family: var(--font-body); font-weight: 300; font-size: 16px; line-height: 1.65; }
@@ -112,7 +103,7 @@ nav.main a:hover { border-color: var(--gold); }
 /* Founder editorial (2-col) */
 .editorial { background: var(--surface); border-block: 1px solid var(--line); }
 .founder { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; }
-.founder img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 40% 20%; }
+.founder img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 40% 20%; }
 .founder .label { color: var(--gold-text); }
 .founder h2 { font-family: var(--font-italic); font-style: italic; font-weight: 500; font-size: clamp(2rem, 3.6vw, 2.8rem); line-height: 1.15; margin-block: 12px 22px; }
 .founder blockquote { margin: 0; font-size: 1.05rem; color: var(--ink); max-width: 34em; display: grid; gap: 14px; }
@@ -199,6 +190,54 @@ nav.main a[aria-current="page"] { border-color: var(--gold); }
 .share p { color: var(--muted); max-width: 34em; margin: 12px auto 0; }
 .share .tags { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px 28px; margin-top: 22px; font-family: var(--font-italic); font-style: italic; font-size: 1.3rem; color: var(--gold-text); }
 .share .btn-outline { margin-top: 28px; }
+
+/* ---- Phones and small tablets ---- */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+img { max-width: 100%; }
+.head-right a { width: 40px; height: 40px; padding: 9px; margin: -9px 0; }
+@media (max-width: 820px) {
+  .founder figure { width: min(72%, 300px); max-width: none; margin-inline: auto; }
+  .founder img { aspect-ratio: 4 / 5; }
+  .founder h2 { margin-top: 0; }
+  .story { gap: 28px; }
+  .story-media { width: min(80%, 340px); margin-inline: auto; }
+}
+@media (max-width: 700px) {
+  section { padding-block: 48px; }
+  .page-intro { padding-block: 40px 28px; }
+  .announce { font-size: 0.78rem; padding: 7px 12px; }
+  .head-row { padding-block: 8px 4px; gap: 8px; }
+  .head-left { display: none; }
+  .head-row { grid-template-columns: 1fr auto 1fr; }
+  .head-row::before { content: ""; }
+  .logo svg { width: 28px; height: 28px; }
+  .logo b { font-size: 1.1rem; }
+  .head-right { gap: 2px; }
+  nav.main { flex-wrap: wrap; justify-content: center; gap: 4px 18px; padding-block: 4px 10px; overflow: visible; }
+  nav.main a { font-size: 0.7rem; letter-spacing: 0.1em; padding-block: 6px 2px; }
+  .btn-outline { padding: 12px 20px; max-width: 100%; white-space: normal; text-align: center; line-height: 1.4; }
+  .founder blockquote { font-size: 1rem; }
+  .gal-wide img { aspect-ratio: 16 / 10; }
+  .gal-grid { columns: 2; column-gap: 12px; }
+  .gal-grid figure { margin-bottom: 14px; }
+  .story-gallery figcaption { font-size: 0.82rem; }
+  .route { margin-top: 32px; }
+  .stops { gap: 26px 14px; }
+  .stop h3 { font-size: 1.25rem; }
+  .stop p { font-size: 0.88rem; }
+  .visit .facts { gap: 18px; flex-direction: column; align-items: center; }
+  .visit .facts span { overflow-wrap: anywhere; }
+  .toolbar { gap: 14px; padding-block: 12px; }
+  .tool-right { gap: 10px; }
+  .results { font-size: 0.88rem; }
+  .card-name { font-size: 0.92rem; letter-spacing: 0.14em; }
+  .card-brand { font-size: 0.85rem; }
+  .card-price { font-size: 0.92rem; }
+  .quick-grid img { max-height: 46vh; }
+  .quick-body { padding: 22px 18px 26px; }
+  footer { padding-block: 40px 24px; }
+  .foot-bottom { flex-direction: column; }
+}
 </style>
 </head>
 <body>
@@ -243,7 +282,7 @@ nav.main a[aria-current="page"] { border-color: var(--gold); }
     </div>
   </div>
   <nav class="main wrap" aria-label="Main">
-    <a href="index.html#weaves">Sarees by weave</a>
+    <a href="index.html">Shop sarees</a>
     <a href="story.html">Our story</a>
     <a href="clients.html" aria-current="page">Happy clients</a>
     <a href="index.html#visit">Visit</a>
@@ -251,6 +290,10 @@ nav.main a[aria-current="page"] { border-color: var(--gold); }
 </header>
 
 <main>
+  <div class="hero">
+    <img src="images/hero.webp" width="1672" height="941" alt="Three generations of women in silk sarees on a heritage verandah, with Banarasi sarees draped beside them and jasmine flowers in brass bowls. The headline reads: Woven stories, rooted in heritage. Sarees that carry the craft, the culture and the stories of generations.">
+  </div>
+
   <section class="page-intro">
     <div class="wrap">
       <p class="label">#ClientDiaries</p>
@@ -300,7 +343,7 @@ nav.main a[aria-current="page"] { border-color: var(--gold); }
       <div>
         <h4>Explore</h4>
         <ul>
-          <li><a href="index.html#weaves">Sarees by weave</a></li>
+          <li><a href="index.html">Shop sarees</a></li>
           <li><a href="story.html">Our story</a></li>
           <li><a href="clients.html">Happy clients</a></li>
           <li><a href="index.html#visit">Visit</a></li>

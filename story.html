@@ -8,8 +8,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Jost:wght@300;400;500&family=Rozha+One&family=Tiro+Devanagari+Marathi&display=swap">
 <style>
-/* Layout: Our Story. Same header and footer as the home page; intro, founder note, photo gallery (wide stall photo + masonry grid). */
+/* Layout: Our Story. Same header and footer as the home page; intro, founder note, photo gallery (wide stall photo + masonry grid), India-to-Australia journey (four paintings). */
 :root {
+  color-scheme: light;        /* always light, even when the device is in dark mode */
   --plum: #8a1f5e;            /* logo only */
   --ground: #f9f6f0;          /* ivory page */
   --surface: #ffffff;
@@ -27,20 +28,10 @@
   --font-mark: "Rozha One", Georgia, serif;
   --font-deva: "Tiro Devanagari Marathi", "Noto Serif Devanagari", serif;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --plum: #d36aa4; --ground: #14110e; --surface: #1d1915; --ink: #f1ebe1; --muted: #b2a798;
-    --line: #362f28; --band: #1b1713; --accent: #0b0907; --on-accent: #f1ebe1; --gold: #d4ae5e; --gold-text: #dcb766;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --plum: #d36aa4; --ground: #14110e; --surface: #1d1915; --ink: #f1ebe1; --muted: #b2a798;
-  --line: #362f28; --band: #1b1713; --accent: #0b0907; --on-accent: #f1ebe1; --gold: #d4ae5e; --gold-text: #dcb766;
-  color-scheme: dark;
-}
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
 body { background: var(--ground); color: var(--ink); font-family: var(--font-body); font-weight: 300; font-size: 16px; line-height: 1.65; }
@@ -112,7 +103,7 @@ nav.main a:hover { border-color: var(--gold); }
 /* Founder editorial (2-col) */
 .editorial { background: var(--surface); border-block: 1px solid var(--line); }
 .founder { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; }
-.founder img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 40% 20%; }
+.founder img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 40% 20%; }
 .founder .label { color: var(--gold-text); }
 .founder h2 { font-family: var(--font-italic); font-style: italic; font-weight: 500; font-size: clamp(2rem, 3.6vw, 2.8rem); line-height: 1.15; margin-block: 12px 22px; }
 .founder blockquote { margin: 0; font-size: 1.05rem; color: var(--ink); max-width: 34em; display: grid; gap: 14px; }
@@ -177,13 +168,61 @@ nav.main a[aria-current="page"] { border-color: var(--gold); }
 .story-gallery .gal-head .label { color: var(--gold-text); }
 .story-gallery .gal-head h2 { font-family: var(--font-italic); font-weight: 500; font-size: clamp(1.8rem, 3.2vw, 2.4rem); margin-top: 8px; }
 .gal-wide { margin: 0 0 18px; }
-.gal-wide img { width: 100%; aspect-ratio: 2.4 / 1; object-fit: cover; display: block; }
+.gal-wide img { width: 100%; height: auto; aspect-ratio: 2.4 / 1; object-fit: cover; display: block; }
 .gal-grid { columns: 3 220px; column-gap: 18px; }
 .gal-grid figure { margin: 0 0 18px; break-inside: avoid; }
 .gal-grid img { width: 100%; height: auto; display: block; }
 .story-gallery figcaption { margin-top: 8px; font-size: 0.88rem; color: var(--muted); }
 .story-gallery figcaption b { font-weight: 500; color: var(--ink); }
 .gal-more { text-align: center; margin-top: 18px; }
+
+/* ---- Phones and small tablets ---- */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+img { max-width: 100%; }
+.head-right a { width: 40px; height: 40px; padding: 9px; margin: -9px 0; }
+@media (max-width: 820px) {
+  .founder figure { width: min(72%, 300px); max-width: none; margin-inline: auto; }
+  .founder img { aspect-ratio: 4 / 5; }
+  .founder h2 { margin-top: 0; }
+  .story { gap: 28px; }
+  .story-media { width: min(80%, 340px); margin-inline: auto; }
+}
+@media (max-width: 700px) {
+  section { padding-block: 48px; }
+  .page-intro { padding-block: 40px 28px; }
+  .announce { font-size: 0.78rem; padding: 7px 12px; }
+  .head-row { padding-block: 8px 4px; gap: 8px; }
+  .head-left { display: none; }
+  .head-row { grid-template-columns: 1fr auto 1fr; }
+  .head-row::before { content: ""; }
+  .logo svg { width: 28px; height: 28px; }
+  .logo b { font-size: 1.1rem; }
+  .head-right { gap: 2px; }
+  nav.main { flex-wrap: wrap; justify-content: center; gap: 4px 18px; padding-block: 4px 10px; overflow: visible; }
+  nav.main a { font-size: 0.7rem; letter-spacing: 0.1em; padding-block: 6px 2px; }
+  .btn-outline { padding: 12px 20px; max-width: 100%; white-space: normal; text-align: center; line-height: 1.4; }
+  .founder blockquote { font-size: 1rem; }
+  .gal-wide img { aspect-ratio: 16 / 10; }
+  .gal-grid { columns: 2; column-gap: 12px; }
+  .gal-grid figure { margin-bottom: 14px; }
+  .story-gallery figcaption { font-size: 0.82rem; }
+  .route { margin-top: 32px; }
+  .stops { gap: 26px 14px; }
+  .stop h3 { font-size: 1.25rem; }
+  .stop p { font-size: 0.88rem; }
+  .visit .facts { gap: 18px; flex-direction: column; align-items: center; }
+  .visit .facts span { overflow-wrap: anywhere; }
+  .toolbar { gap: 14px; padding-block: 12px; }
+  .tool-right { gap: 10px; }
+  .results { font-size: 0.88rem; }
+  .card-name { font-size: 0.92rem; letter-spacing: 0.14em; }
+  .card-brand { font-size: 0.85rem; }
+  .card-price { font-size: 0.92rem; }
+  .quick-grid img { max-height: 46vh; }
+  .quick-body { padding: 22px 18px 26px; }
+  footer { padding-block: 40px 24px; }
+  .foot-bottom { flex-direction: column; }
+}
 </style>
 </head>
 <body>
@@ -228,7 +267,7 @@ nav.main a[aria-current="page"] { border-color: var(--gold); }
     </div>
   </div>
   <nav class="main wrap" aria-label="Main">
-    <a href="index.html#weaves">Sarees by weave</a>
+    <a href="index.html">Shop sarees</a>
     <a href="story.html" aria-current="page">Our story</a>
     <a href="clients.html">Happy clients</a>
     <a href="index.html#visit">Visit</a>
@@ -281,6 +320,42 @@ nav.main a[aria-current="page"] { border-color: var(--gold); }
       <p class="gal-more"><a class="btn-outline" href="https://www.facebook.com/vastrakoshsydney/" target="_blank" rel="noopener">See more on Facebook</a></p>
     </div>
   </section>
+  <section class="journey-sec" id="journey">
+    <div class="wrap">
+      <div class="journey-head">
+        <h2>From India to Australia</h2>
+        <p class="label tagline">Same roots. New horizons.</p>
+        <p class="body">India is in our roots. Australia is in our journey. Through Vastrakosh, we bring the richness of Indian textiles and crafts to our community in Sydney — creating a bridge between heritage and modern life.</p>
+      </div>
+      <div class="route" aria-hidden="true"><span class="label">India</span><span class="line"></span><span class="label">Australia</span></div>
+      <ol class="stops">
+        <li class="stop">
+          <figure><img src="images/journey-1.jpg" alt="Painting of a woman in a red and green saree holding a puja thali" loading="lazy"></figure>
+          <span class="num">I.</span>
+          <h3>Rooted in ritual</h3>
+          <p>It begins at home, with a morning prayer, a puja thali and a red-bordered saree.</p>
+        </li>
+        <li class="stop">
+          <figure><img src="images/journey-2.jpg" alt="Painting of a woman in a blue saree tying flowers in her hair before a temple deity" loading="lazy"></figure>
+          <span class="num">II.</span>
+          <h3>Carried in faith</h3>
+          <p>Flowers in the hair before the temple. Traditions passed from mother to daughter.</p>
+        </li>
+        <li class="stop">
+          <figure><img src="images/journey-3.jpg" alt="Painting of a woman in a red saree walking in front of a large setting sun" loading="lazy"></figure>
+          <span class="num">III.</span>
+          <h3>The journey</h3>
+          <p>Wherever we go, the saree comes with us, folded with memories of home.</p>
+        </li>
+        <li class="stop">
+          <figure><img src="images/journey-4.jpg" alt="Painting of a woman seen from behind in a red and yellow saree, with jasmine and roses in her braid" loading="lazy" style="object-position: 50% 30%"></figure>
+          <span class="num">IV.</span>
+          <h3>A new horizon</h3>
+          <p>In Sydney, the same jasmine and the same silk. The tradition lives on, far from where it began.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
 </main>
 
 <footer>
@@ -294,7 +369,7 @@ nav.main a[aria-current="page"] { border-color: var(--gold); }
       <div>
         <h4>Explore</h4>
         <ul>
-          <li><a href="index.html#weaves">Sarees by weave</a></li>
+          <li><a href="index.html">Shop sarees</a></li>
           <li><a href="story.html">Our story</a></li>
           <li><a href="clients.html">Happy clients</a></li>
           <li><a href="index.html#visit">Visit</a></li>
