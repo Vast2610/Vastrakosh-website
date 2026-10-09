@@ -236,6 +236,14 @@ body.locked { overflow: hidden; }
 .card-name { font-family: var(--font-caps); font-size: 1.05rem; letter-spacing: 0.18em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card-price { font-size: 1rem; color: var(--ink); }
 .card-price small { color: var(--muted); font-size: 0.82rem; }
+.sold-badge { position: absolute; top: 10px; left: 10px; z-index: 1; background: rgba(255,255,255,.92); color: #241d19; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; padding: 5px 9px; }
+.card.sold .card-media img { opacity: .6; filter: grayscale(.35); }
+.card.sold .card-price { color: var(--muted); }
+.quick-sold { display: inline-block; justify-self: start; border: 1px solid var(--ink); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; padding: 4px 10px; }
+.quick-thumbs { display: flex; gap: 8px; flex-wrap: wrap; }
+.quick-thumbs button { width: 56px; height: 72px; padding: 0; border: 1px solid var(--line); background: #efe9df; cursor: pointer; }
+.quick-thumbs button[aria-current="true"] { border-color: var(--ink); }
+.quick-thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .empty { grid-column: 1 / -1; text-align: center; color: var(--muted); padding-block: 40px; }
 
 dialog.quick { border: 0; padding: 0; width: min(880px, calc(100% - 32px)); max-height: calc(100% - 32px); background: var(--surface); color: var(--ink); }
@@ -360,6 +368,8 @@ img { max-width: 100%; }
           <option value="featured">Featured</option>
           <option value="az">Name: A to Z</option>
           <option value="za">Name: Z to A</option>
+          <option value="price-asc">Price: low to high</option>
+          <option value="price-desc">Price: high to low</option>
           <option value="weave">Weave</option>
         </select>
       </label>
@@ -411,8 +421,10 @@ img { max-width: 100%; }
         <h2 id="quick-name"></h2>
         <p class="meta" id="quick-meta"></p>
         <p id="quick-desc"></p>
-        <p class="card-price">Price on request</p>
-        <a class="btn-outline" href="https://www.facebook.com/vastrakoshsydney/" target="_blank" rel="noopener">Enquire on Facebook</a>
+        <span class="quick-sold" id="quick-sold" hidden>Sold out</span>
+        <p class="card-price" id="quick-price">Price on request</p>
+        <div class="quick-thumbs" id="quick-thumbs"></div>
+        <a class="btn-outline" id="quick-cta" href="https://www.facebook.com/vastrakoshsydney/" target="_blank" rel="noopener">Enquire on Facebook</a>
         <p class="contact">Or call 0431 983 840 · vastrakoshsydney@gmail.com</p>
       </div>
     </div>
@@ -455,6 +467,7 @@ img { max-width: 100%; }
 
 
 <script>
+// Shown only if the live catalogue (Sanity) cannot be reached.
 var PRODUCTS = [
   { id: 'purple-paithani', name: 'Purple Paithani Silk Saree', weave: 'Paithani', colour: 'Purple', img: 'images/story-7.jpg', desc: 'Purple silk with gold buttis and a pallu woven with peacocks and flowers.' },
   { id: 'pink-floral', name: 'Pink Floral Print Saree', weave: 'Printed', colour: 'Pink', img: 'images/story-1.jpg', desc: 'Soft pink florals on a glossy drape. Shown with a contrast green blouse.' },
@@ -484,15 +497,18 @@ var PRODUCTS = [
   function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function uniq(key) { return PRODUCTS.map(function (p) { return p[key]; }).filter(function (v, i, a) { return a.indexOf(v) === i; }).sort(); }
 
-  var SWATCH = { Cream: '#efe4cc', Gold: '#c99a2e', Green: '#2f6b4a', Pink: '#e48aa8', Purple: '#6b3a8f', Red: '#b8182e' };
+  var SWATCH = { Cream: '#efe4cc', Gold: '#c99a2e', Green: '#2f6b4a', Pink: '#e48aa8', Purple: '#6b3a8f', Red: '#b8182e', Blue: '#2f4c8f', Yellow: '#e8c33a', Orange: '#e07a22', White: '#ffffff', Black: '#1d1a18', Multicolour: 'conic-gradient(#b8182e, #e8c33a, #2f6b4a, #2f4c8f, #6b3a8f, #b8182e)' };
+  function priceText(p) { return typeof p.price === 'number' ? 'A$' + p.price.toLocaleString('en-AU', { maximumFractionDigits: 2 }) : 'Price on request'; }
   function opts(key, el) {
     el.innerHTML = uniq(key).map(function (v) {
       var dot = key === 'colour' ? '<span class="swatch-dot" style="background:' + (SWATCH[v] || '#ccc') + '"></span>' : '';
       return '<label class="opt"><input type="checkbox" data-key="' + key + '" value="' + esc(v) + '">' + dot + esc(v) + '</label>';
     }).join('');
   }
-  opts('weave', document.getElementById('opts-weave'));
-  opts('colour', document.getElementById('opts-colour'));
+  function buildOpts() {
+    opts('weave', document.getElementById('opts-weave'));
+    opts('colour', document.getElementById('opts-colour'));
+  }
   function count(fn) { return PRODUCTS.filter(fn).length; }
 
   var heartSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20s-7-4.4-9-9a4.8 4.8 0 0 1 9-3 4.8 4.8 0 0 1 9 3c-2 4.6-9 9-9 9z"/></svg>';
@@ -504,6 +520,15 @@ var PRODUCTS = [
     var s = sortEl.value;
     if (s === 'az') list.sort(function (a, b) { return a.name.localeCompare(b.name); });
     if (s === 'za') list.sort(function (a, b) { return b.name.localeCompare(a.name); });
+    if (s === 'price-asc' || s === 'price-desc') {
+      var dir = s === 'price-asc' ? 1 : -1;
+      list.sort(function (a, b) {
+        var ap = typeof a.price === 'number', bp = typeof b.price === 'number';
+        if (ap !== bp) return ap ? -1 : 1;
+        return ap ? (a.price - b.price) * dir : 0;
+      });
+    }
+    if (s === 'featured') list.sort(function (a, b) { return (a.inStock === false) - (b.inStock === false); });
     if (s === 'weave') list.sort(function (a, b) { return a.weave.localeCompare(b.weave) || a.name.localeCompare(b.name); });
     results.textContent = list.length + (list.length === 1 ? ' Result' : ' Results');
     var n = selected.weave.length + selected.colour.length;
@@ -517,12 +542,13 @@ var PRODUCTS = [
     if (!list.length) { grid.innerHTML = '<p class="empty">No sarees match these filters. Try clearing one.</p>'; return; }
     grid.innerHTML = list.map(function (p) {
       var on = !!wish[p.id];
-      return '<article class="card">' +
-        '<button type="button" class="card-media" data-open="' + p.id + '" aria-label="View ' + esc(p.name) + '"><img src="' + p.img + '" alt="' + esc(p.name) + '" loading="lazy"></button>' +
+      var sold = p.inStock === false;
+      return '<article class="card' + (sold ? ' sold' : '') + '">' +
+        '<button type="button" class="card-media" data-open="' + esc(p.id) + '" aria-label="View ' + esc(p.name) + (sold ? ' (sold out)' : '') + '">' + (sold ? '<span class="sold-badge">Sold out</span>' : '') + '<img src="' + esc(p.img) + '" alt="' + esc(p.name) + '" loading="lazy"></button>' +
         '<div class="card-row"><span class="card-brand">Vastrakosh</span>' +
-        '<button type="button" class="heart" data-wish="' + p.id + '" aria-pressed="' + on + '" aria-label="Save ' + esc(p.name) + ' to wishlist">' + heartSvg + '</button></div>' +
+        '<button type="button" class="heart" data-wish="' + esc(p.id) + '" aria-pressed="' + on + '" aria-label="Save ' + esc(p.name) + ' to wishlist">' + heartSvg + '</button></div>' +
         '<h2 class="card-name" title="' + esc(p.name) + '">' + esc(p.name) + '</h2>' +
-        '<p class="card-price">Price on request</p>' +
+        '<p class="card-price">' + (sold ? 'Sold out' : esc(priceText(p))) + '</p>' +
       '</article>';
     }).join('');
   }
@@ -580,13 +606,26 @@ var PRODUCTS = [
   var dlg = document.getElementById('quick');
   function openQuick(id) {
     var p = PRODUCTS.filter(function (x) { return x.id === id; })[0]; if (!p) return;
-    document.getElementById('quick-img').src = p.img;
+    var big = p.imgs && p.imgs.length ? p.imgs : [p.img];
+    var sized = function (u, w) { return /cdn\.sanity\.io/.test(u) ? u + '?w=' + w + '&auto=format&fit=max' : u; };
+    document.getElementById('quick-img').src = sized(big[0], 1200);
+    var thumbs = document.getElementById('quick-thumbs');
+    thumbs.innerHTML = big.length > 1 ? big.map(function (u, i) { return '<button type="button" data-thumb="' + esc(sized(u, 1200)) + '" aria-label="Photo ' + (i + 1) + '" aria-current="' + (i === 0) + '"><img src="' + esc(sized(u, 160)) + '" alt=""></button>'; }).join('') : '';
+    var sold = p.inStock === false;
+    document.getElementById('quick-sold').hidden = !sold;
+    document.getElementById('quick-price').textContent = sold ? 'This saree has been sold. Ask us about similar pieces.' : priceText(p);
+    document.getElementById('quick-cta').textContent = sold ? 'Ask about similar sarees' : 'Enquire on Facebook';
     document.getElementById('quick-img').alt = p.name;
     document.getElementById('quick-name').textContent = p.name;
     document.getElementById('quick-meta').textContent = p.weave + ' · ' + p.colour;
-    document.getElementById('quick-desc').textContent = p.desc;
+    document.getElementById('quick-desc').textContent = p.desc || '';
     if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
   }
+  document.getElementById('quick-thumbs').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-thumb]'); if (!b) return;
+    document.getElementById('quick-img').src = b.dataset.thumb;
+    this.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-current', String(x === b)); });
+  });
   document.getElementById('quick-close').addEventListener('click', function () { dlg.close ? dlg.close() : dlg.removeAttribute('open'); });
   dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
 
@@ -594,7 +633,22 @@ var PRODUCTS = [
   function headH() { document.documentElement.style.setProperty('--head-h', head.offsetHeight + 'px'); }
   window.addEventListener('resize', headH); headH();
 
-  render();
+  // Live catalogue: sarees are managed at vastrakosh.sanity.studio
+  var SANITY = 'https://50busls6.apicdn.sanity.io/v2024-01-01/data/query/production';
+  var QUERY = '*[_type == "saree" && !(_id in path("drafts.**")) && defined(images[0].asset)] | order(coalesce(order, 99999) asc, _createdAt desc){ "id": _id, name, weave, colour, "desc": description, price, inStock, "imgs": images[].asset->url }';
+  grid.innerHTML = '<p class="empty">Loading sarees…</p>';
+  fetch(SANITY + '?query=' + encodeURIComponent(QUERY))
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (data) {
+      var live = (data.result || []).map(function (p) {
+        p.img = p.imgs[0] + '?w=700&auto=format&fit=max';
+        if (p.inStock !== false) p.inStock = true;
+        return p;
+      });
+      if (live.length) PRODUCTS = live;
+    })
+    .catch(function () { /* keep the built-in list */ })
+    .then(function () { buildOpts(); render(); });
 })();
 </script>
 </body>
