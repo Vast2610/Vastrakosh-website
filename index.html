@@ -471,21 +471,8 @@ img { max-width: 100%; }
 
 
 <script>
-// Shown only if the live catalogue (Sanity) cannot be reached.
-var PRODUCTS = [
-  { id: 'purple-paithani', name: 'Purple Paithani Silk Saree', weave: 'Paithani', colour: 'Purple', img: 'images/story-7.jpg', desc: 'Purple silk with gold buttis and a pallu woven with peacocks and flowers.' },
-  { id: 'pink-floral', name: 'Pink Floral Print Saree', weave: 'Printed', colour: 'Pink', img: 'images/story-1.jpg', desc: 'Soft pink florals on a glossy drape. Shown with a contrast green blouse.' },
-  { id: 'green-zari', name: 'Bottle Green Zari Silk Saree', weave: 'Silk', colour: 'Green', img: 'images/story-5.jpg', desc: 'Deep green silk with gold buttis and a rich zari pallu.' },
-  { id: 'coral-woven', name: 'Coral Woven Saree', weave: 'Woven', colour: 'Red', img: 'images/story-3.jpg', desc: 'Coral and red, patterned across the whole drape with multicoloured motifs.' },
-  { id: 'cream-embroidered', name: 'Cream Embroidered Silk Saree', weave: 'Embroidered', colour: 'Cream', img: 'images/story-4.jpg', desc: 'Cream silk with a hand-embroidered mandala in pink and green thread.' },
-  { id: 'magenta-kanjeevaram', name: 'Magenta Kanjeevaram Silk Saree', weave: 'Kanjeevaram', colour: 'Pink', img: 'images/saree-kanjeevaram.jpg', desc: 'Rich magenta silk from Tamil Nadu with a wide gold zari border.' },
-  { id: 'red-banarasi', name: 'Red Banarasi Brocade Saree', weave: 'Banarasi', colour: 'Red', img: 'images/saree-banarasi.jpg', desc: 'Red silk woven in Varanasi with dense gold floral brocade.' },
-  { id: 'ivory-cotton', name: 'Ivory Striped Cotton Saree', weave: 'Cotton', colour: 'Cream', img: 'images/saree-cotton.jpg', desc: 'Breathable handloom cotton with blue stripes and a fringed edge.' },
-  { id: 'blush-chanderi', name: 'Blush Chanderi Saree', weave: 'Chanderi', colour: 'Pink', img: 'images/saree-chanderi.jpg', desc: 'Sheer, light Chanderi from Madhya Pradesh with gold motifs.' },
-  { id: 'gold-paithani', name: 'Gold Peacock Paithani Saree', weave: 'Paithani', colour: 'Gold', img: 'images/saree-paithani.jpg', desc: 'Gold and magenta silk with peacocks and flowers woven through.' },
-  { id: 'rose-organza', name: 'Rose Floral Organza Saree', weave: 'Organza', colour: 'Pink', img: 'images/saree-organza.jpg', desc: 'Sheer pale-pink organza embroidered with pink flowers.' },
-  { id: 'sage-georgette', name: 'Sage Georgette Saree', weave: 'Georgette', colour: 'Green', img: 'images/saree-georgette.jpg', desc: 'Fluid sage-green georgette with scattered sequin embroidery.' }
-];
+// Filled from the live catalogue (Sanity).
+var PRODUCTS = [];
 
 (function () {
   var grid = document.getElementById('products');
@@ -651,8 +638,16 @@ var PRODUCTS = [
       });
       if (live.length) PRODUCTS = live;
     })
-    .catch(function () { /* keep the built-in list */ })
-    .then(function () { buildOpts(); render(); });
+    .catch(function () { /* handled below */ })
+    .then(function () {
+      buildOpts();
+      if (!PRODUCTS.length) {
+        results.textContent = '';
+        grid.innerHTML = '<p class="empty">We couldn\'t load the sarees just now. Please refresh the page, or call us on 0431 983 840.</p>';
+        return;
+      }
+      render();
+    });
 })();
 </script>
 </body>

@@ -1,7 +1,7 @@
 import {defineField, defineType} from 'sanity'
 
 const WEAVES = ['Banarasi', 'Kanjeevaram', 'Paithani', 'Chanderi', 'Organza', 'Georgette', 'Cotton', 'Silk', 'Tissue', 'Embroidered', 'Printed', 'Woven', 'Other']
-const COLOURS = ['Red', 'Pink', 'Purple', 'Blue', 'Green', 'Yellow', 'Orange', 'Gold', 'Cream', 'White', 'Black', 'Multicolour']
+const COLOURS = ['Red', 'Pink', 'Purple', 'Blue', 'Green', 'Yellow', 'Orange', 'Gold', 'Cream', 'White', 'Grey', 'Black', 'Multicolour']
 
 export default defineType({
   name: 'saree',
