@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Jost:wght@300;400;500&family=Rozha+One&family=Tiro+Devanagari+Marathi&display=swap">
 <style>
-/* Layout: Happy Clients. Same header and footer as the home page; intro, featured client story (photo + story), client diaries grid, share-your-moment band. */
+/* Layout: Happy Clients. Same header and footer as the home page; banner, intro, client photo grid, share-your-moment band. */
 :root {
   color-scheme: light;        /* always light, even when the device is in dark mode */
   --plum: #8a1f5e;            /* logo only */
@@ -165,6 +165,11 @@ nav.main a[aria-current="page"] { border-color: var(--gold); }
 
 .story { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 56px; align-items: center; }
 @media (max-width: 820px) { .story { grid-template-columns: 1fr; gap: 32px; } }
+.client-grid { columns: 3 260px; column-gap: 18px; }
+.client-grid figure { margin: 0 0 22px; break-inside: avoid; }
+.client-grid img { width: 100%; height: auto; display: block; }
+.client-grid figcaption { margin-top: 10px; font-family: var(--font-italic); font-style: italic; font-size: 1.15rem; color: var(--ink); text-align: center; }
+@media (max-width: 700px) { .client-grid { columns: 2; column-gap: 12px; } .client-grid figcaption { font-size: 1rem; } }
 .story-media { margin: 0; position: relative; aspect-ratio: 4 / 5; overflow: hidden;
   background-color: #b8862a;
   background-image:
@@ -307,21 +312,14 @@ img { max-width: 100%; }
   </section>
 
   <section style="padding-top: 0">
-    <div class="wrap story">
-      <figure class="story-media">
-        <figcaption>Golden saree · red embroidered blouse</figcaption>
-      </figure>
-      <div>
-        <p class="label">Ganesh Chaturthi · September 2026</p>
-        <h2>Radiating grace and festive joy</h2>
-        <p class="who">Shefali Yalgudkar</p>
-        <p class="where">The Gables, Box Hill, Sydney</p>
-        <blockquote>
-          <p>Our beautiful client is absolutely glowing in this stunning golden saree from Vastrakosh, paired perfectly with a rich red embroidered blouse. A divine look for a divine occasion.</p>
-          <p>The perfect blend of tradition and elegance. Seeing our clients look so radiant makes our day.</p>
-        </blockquote>
-        <div class="look"><span>Golden saree</span><span>Red embroidered blouse</span><span>Festive</span></div>
-        <a class="btn-outline" href="https://www.facebook.com/vastrakoshsydney/" target="_blank" rel="noopener">Watch the video on Facebook</a>
+    <div class="wrap">
+      <div class="client-grid">
+        <figure><img src="images/client-1.jpg" alt="A client in a purple Paithani silk saree with a peacock border, at a garden wedding" loading="lazy"><figcaption>Purple Paithani</figcaption></figure>
+        <figure><img src="images/client-2.jpg" alt="A client in a wine Paithani saree with a gold and red peacock pallu" loading="lazy"><figcaption>Wine Paithani</figcaption></figure>
+        <figure><img src="images/client-3.jpg" alt="A client in a cream Paithani saree with an orange border, at a festive celebration at home" loading="lazy"><figcaption>Cream Paithani</figcaption></figure>
+        <figure><img src="images/client-4.jpg" alt="A client in a blue silk saree with a yellow blouse" loading="lazy"><figcaption>Blue silk saree</figcaption></figure>
+        <figure><img src="images/client-5.jpg" alt="A client in a gold tissue saree with a red brocade blouse, beside a Ganesh altar" loading="lazy"><figcaption>Gold tissue saree</figcaption></figure>
+        <figure><img src="images/client-6.jpg" alt="A client in a peacock blue tissue saree with tasselled pallu" loading="lazy"><figcaption>Peacock blue tissue saree</figcaption></figure>
       </div>
     </div>
   </section>
