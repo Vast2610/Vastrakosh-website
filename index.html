@@ -289,6 +289,23 @@ dialog.quick::backdrop { background: rgba(30, 22, 16, .55); }
 .event .place { color: #e9d6b4; font-size: 0.92rem; }
 .event a { justify-self: start; margin-top: 4px; color: #f6c453; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; text-underline-offset: 3px; }
 .event a:focus-visible { outline: 2px solid #f6c453; outline-offset: 2px; }
+.promo-compact { display: none; }
+@media (max-width: 700px) {
+  .promo { margin-top: 14px; }
+  .promo-compact { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 2px 12px; padding: 18px 16px 14px; position: relative; }
+  .promo-compact .eyebrow { grid-column: 1 / -1; font-size: 0.66rem; }
+  .promo-compact .eyebrow svg { width: 18px; height: 18px; }
+  .c-title { grid-column: 1 / -1; margin: 2px 0 4px; font-family: var(--font-italic); font-style: italic; font-weight: 500; font-size: 1.7rem; line-height: 1.05; color: #fff4dc; }
+  .c-events { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; font-size: 0.9rem; color: #f1dfbf; }
+  .c-events b { color: #f6c453; font-weight: 500; }
+  .c-toggle { align-self: end; background: none; border: 1px solid rgba(246,196,83,.7); color: #f6c453; font: inherit; font-size: 0.74rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; padding: 7px 12px; cursor: pointer; }
+  .c-toggle span { display: inline-block; transition: transform .2s; }
+  .promo.open .c-toggle span { transform: rotate(180deg); }
+  .c-toggle:focus-visible { outline: 2px solid #f6c453; outline-offset: 2px; }
+  .promo-inner { display: none; }
+  .promo.open .promo-inner { display: grid; padding-top: 0; gap: 16px; }
+  .promo.open .promo-inner .eyebrow, .promo.open .promo-inner h2 { display: none; }
+}
 @media (max-width: 860px) { .promo-inner { grid-template-columns: 1fr; gap: 20px; padding: 30px 20px 22px; } }
 @media (max-width: 480px) { .promo-events { grid-template-columns: 1fr; } }
 
@@ -391,7 +408,16 @@ img { max-width: 100%; }
 <main id="top">
   <div class="wrap">
     <aside class="promo" id="popup-banner" aria-labelledby="promo-title" data-ends="2026-10-24T19:00:00+11:00">
-      <div class="promo-inner">
+      <div class="promo-compact">
+        <p class="eyebrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1.6 2.2 2.2 3.7 2.2 4.8A2.2 2.2 0 0 1 12 10a2.2 2.2 0 0 1-2.2-2.2C9.8 6.7 10.4 5.2 12 3z" fill="#f6c453"/><path d="M3 13h18c-.6 3.6-4.3 6-9 6s-8.4-2.4-9-6z" fill="#d4923a"/><path d="M6.5 13c.8 1.3 2.9 2.2 5.5 2.2s4.7-.9 5.5-2.2" fill="none" stroke="#2b1810" stroke-width="1"/></svg> Diwali pop-ups</p>
+        <p class="c-title">The Desi Edit</p>
+        <ul class="c-events">
+          <li data-ends="2026-10-18T17:00:00+11:00"><b>18 Oct</b> · Marsden Park</li>
+          <li data-ends="2026-10-24T19:00:00+11:00"><b>24 Oct</b> · The Ponds</li>
+        </ul>
+        <button type="button" class="c-toggle" aria-expanded="false" aria-controls="promo-full">Details <span aria-hidden="true">▾</span></button>
+      </div>
+      <div class="promo-inner" id="promo-full">
         <div>
           <p class="eyebrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1.6 2.2 2.2 3.7 2.2 4.8A2.2 2.2 0 0 1 12 10a2.2 2.2 0 0 1-2.2-2.2C9.8 6.7 10.4 5.2 12 3z" fill="#f6c453"/><path d="M3 13h18c-.6 3.6-4.3 6-9 6s-8.4-2.4-9-6z" fill="#d4923a"/><path d="M6.5 13c.8 1.3 2.9 2.2 5.5 2.2s4.7-.9 5.5-2.2" fill="none" stroke="#2b1810" stroke-width="1"/></svg> Diwali 2026 · Festive pop-ups</p>
           <h2 id="promo-title"><span>Our festive pop-up</span>The Desi Edit</h2>
@@ -711,7 +737,13 @@ var PRODUCTS = [];
 (function () {
   var now = Date.now();
   var b = document.getElementById('popup-banner'); if (!b) return;
-  b.querySelectorAll('.event[data-ends]').forEach(function (e) { if (Date.parse(e.dataset.ends) < now) e.hidden = true; });
+  b.querySelectorAll('.event[data-ends], .c-events [data-ends]').forEach(function (e) { if (Date.parse(e.dataset.ends) < now) e.hidden = true; });
+  var t = b.querySelector('.c-toggle');
+  if (t) t.addEventListener('click', function () {
+    var open = b.classList.toggle('open');
+    t.setAttribute('aria-expanded', String(open));
+    t.firstChild.nodeValue = open ? 'Hide ' : 'Details ';
+  });
   if (Date.parse(b.dataset.ends) < now) b.hidden = true;
 })();
 </script>
