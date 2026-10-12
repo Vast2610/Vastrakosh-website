@@ -262,6 +262,36 @@ dialog.quick::backdrop { background: rgba(30, 22, 16, .55); }
 .foot-brand .badge { width: 92px; height: 92px; }
 .foot-brand .badge img { height: 70px; width: auto; display: block; }
 
+/* Festive pop-up banner (Diwali 2026). Each event hides itself after its date; the banner hides after the last one. */
+.promo { position: relative; overflow: hidden; margin-top: 22px; color: #fbf1dc; background-color: #2b1810;
+  background-image:
+    radial-gradient(circle at 12% 120%, rgba(242,167,27,.32), transparent 45%),
+    radial-gradient(circle at 92% -20%, rgba(212,146,58,.28), transparent 42%),
+    radial-gradient(circle, rgba(230,184,92,.18) 1.2px, transparent 1.8px);
+  background-size: 100% 100%, 100% 100%, 22px 22px;
+  border: 1px solid #b08a3e; }
+.promo::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 10px;
+  background: radial-gradient(circle at 50% 0, #f6c453 3px, transparent 3.6px) 0 0 / 26px 10px repeat-x; filter: drop-shadow(0 0 4px rgba(246,196,83,.8)); }
+.promo-inner { position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.3fr); gap: 28px; align-items: center; padding: 34px 32px 30px; }
+.promo .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: #f2b84b; }
+.promo .eyebrow svg { width: 22px; height: 22px; flex: none; }
+.promo h2 { font-family: var(--font-italic); font-style: italic; font-weight: 500; font-size: clamp(2.3rem, 5vw, 3.4rem); line-height: 1; margin: 10px 0 12px; color: #fff4dc; }
+.promo h2 span { display: block; font-family: var(--font-caps); font-style: normal; font-size: 0.34em; letter-spacing: 0.2em; text-transform: uppercase; color: #e8c877; margin-bottom: 8px; }
+.promo .pitch { color: #f1dfbf; max-width: 30em; }
+.promo .offer { display: inline-block; margin-top: 14px; padding: 6px 14px; background: #f2a71b; color: #2b1810; font-weight: 500; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.promo-events { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.event { background: rgba(255, 244, 220, .07); border: 1px solid rgba(232, 200, 119, .45); padding: 16px 16px 14px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.event .date { display: flex; align-items: baseline; gap: 10px; }
+.event .day { font-family: var(--font-italic); font-weight: 500; font-size: 2.6rem; line-height: .9; color: #f6c453; font-variant-numeric: tabular-nums; }
+.event .mon { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: #e8c877; line-height: 1.3; }
+.event .name { font-family: var(--font-caps); font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase; color: #fff4dc; }
+.event .time { font-weight: 400; color: #fbf1dc; }
+.event .place { color: #e9d6b4; font-size: 0.92rem; }
+.event a { justify-self: start; margin-top: 4px; color: #f6c453; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; text-underline-offset: 3px; }
+.event a:focus-visible { outline: 2px solid #f6c453; outline-offset: 2px; }
+@media (max-width: 860px) { .promo-inner { grid-template-columns: 1fr; gap: 20px; padding: 30px 20px 22px; } }
+@media (max-width: 480px) { .promo-events { grid-template-columns: 1fr; } }
+
 /* ---- Phones and small tablets ---- */
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 img { max-width: 100%; }
@@ -360,6 +390,32 @@ img { max-width: 100%; }
 
 <main id="top">
   <div class="wrap">
+    <aside class="promo" id="popup-banner" aria-labelledby="promo-title" data-ends="2026-10-24T19:00:00+11:00">
+      <div class="promo-inner">
+        <div>
+          <p class="eyebrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1.6 2.2 2.2 3.7 2.2 4.8A2.2 2.2 0 0 1 12 10a2.2 2.2 0 0 1-2.2-2.2C9.8 6.7 10.4 5.2 12 3z" fill="#f6c453"/><path d="M3 13h18c-.6 3.6-4.3 6-9 6s-8.4-2.4-9-6z" fill="#d4923a"/><path d="M6.5 13c.8 1.3 2.9 2.2 5.5 2.2s4.7-.9 5.5-2.2" fill="none" stroke="#2b1810" stroke-width="1"/></svg> Diwali 2026 · Festive pop-ups</p>
+          <h2 id="promo-title"><span>Our festive pop-up</span>The Desi Edit</h2>
+          <p class="pitch">Come and see our stock in person. Try on sarees and dupattas, and enjoy special discounts and offers for Diwali.</p>
+          <p class="offer">Festive discounts on the day</p>
+        </div>
+        <div class="promo-events">
+          <div class="event" data-ends="2026-10-18T17:00:00+11:00">
+            <p class="date"><span class="day">18</span><span class="mon">October 2026<br>Sunday</span></p>
+            <p class="name">The Desi Edit</p>
+            <p class="time">11 am to 5 pm</p>
+            <p class="place">Marsden Park Neighbourhood Centre, Sydney</p>
+            <a href="https://www.google.com/maps/search/?api=1&query=Marsden+Park+Neighbourhood+Centre+NSW" target="_blank" rel="noopener">Get directions</a>
+          </div>
+          <div class="event" data-ends="2026-10-24T19:00:00+11:00">
+            <p class="date"><span class="day">24</span><span class="mon">October 2026<br>Saturday</span></p>
+            <p class="name">Festive pop-up</p>
+            <p class="time">10 am to 7 pm</p>
+            <p class="place">The Ponds Community Hub, The Ponds</p>
+            <a href="https://www.google.com/maps/search/?api=1&query=The+Ponds+Community+Hub+NSW" target="_blank" rel="noopener">Get directions</a>
+          </div>
+        </div>
+      </div>
+    </aside>
     <h1 class="shop-title">Sarees</h1>
 
     <div class="toolbar">
@@ -648,6 +704,15 @@ var PRODUCTS = [];
       }
       render();
     });
+})();
+</script>
+<script>
+// Hide each pop-up once it has finished, and the whole banner after the last one.
+(function () {
+  var now = Date.now();
+  var b = document.getElementById('popup-banner'); if (!b) return;
+  b.querySelectorAll('.event[data-ends]').forEach(function (e) { if (Date.parse(e.dataset.ends) < now) e.hidden = true; });
+  if (Date.parse(b.dataset.ends) < now) b.hidden = true;
 })();
 </script>
 </body>
